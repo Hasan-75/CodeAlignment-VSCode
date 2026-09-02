@@ -1,0 +1,154 @@
+{
+  "name": "codealignment-vscode",
+  "displayName": "Code Alignment",
+  "description": "Align code into columns by delimiter. Inspired by Chris McGrath's Visual Studio Code alignment extension.",
+  "version": "1.0.0",
+  "publisher": "hasan75",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hasan-75/CodeAlignment-VSCode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hasan-75/CodeAlignment-VSCode/issues"
+  },
+  "homepage": "https://github.com/Hasan-75/CodeAlignment-VSCode#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Formatters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:codealignment.alignByKey",
+    "onCommand:codealignment.alignByDialog",
+    "onCommand:codealignment.alignFromCaret",
+    "onCommand:codealignment.alignByEquals",
+    "onCommand:codealignment.alignByEqualsEquals",
+    "onCommand:codealignment.alignByMUnderscore",
+    "onCommand:codealignment.alignByQuote",
+    "onCommand:codealignment.alignByPeriod",
+    "onCommand:codealignment.alignBySpace"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codealignment.alignByKey",
+        "title": "Align by key",
+        "category": "Code alignment"
+      },
+      {
+        "command": "codealignment.alignByDialog",
+        "title": "Align by...",
+        "category": "Code alignment"
+      },
+      {
+        "command": "codealignment.alignFromCaret",
+        "title": "Align from caret",
+        "category": "Code alignment"
+      },
+      {
+        "command": "codealignment.alignByEquals",
+        "title": "Align by equals",
+        "category": "Code alignment"
+      },
+      {
+        "command": "codealignment.alignByEqualsEquals",
+        "title": "Align by equals equals",
+        "category": "Code alignment"
+      },
+      {
+        "command": "codealignment.alignByMUnderscore",
+        "title": "Align by m_",
+        "category": "Code alignment"
+      },
+      {
+        "command": "codealignment.alignByQuote",
+        "title": "Align by quote",
+        "category": "Code alignment"
+      },
+      {
+        "command": "codealignment.alignByPeriod",
+        "title": "Align by period",
+        "category": "Code alignment"
+      },
+      {
+        "command": "codealignment.alignBySpace",
+        "title": "Align by space",
+        "category": "Code alignment"
+      },
+      {
+        "command": "codealignment.cancelKeyGrab",
+        "title": "Cancel align by key",
+        "category": "Code alignment"
+      },
+      {
+        "command": "codealignment.keyGrabBackspace",
+        "title": "Align from caret (from key grab)",
+        "category": "Code alignment"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "codealignment.cancelKeyGrab",
+          "when": "codealignment.keyGrab"
+        },
+        {
+          "command": "codealignment.keyGrabBackspace",
+          "when": "codealignment.keyGrab"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "codealignment.alignByKey",
+        "key": "ctrl+=",
+        "mac": "cmd+=",
+        "when": "editorTextFocus && !codealignment.keyGrab"
+      },
+      {
+        "command": "codealignment.alignByKey",
+        "key": "ctrl+=",
+        "mac": "ctrl+=",
+        "when": "editorTextFocus && !codealignment.keyGrab"
+      },
+      {
+        "command": "codealignment.alignByDialog",
+        "key": "ctrl+shift+=",
+        "mac": "cmd+shift+=",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "codealignment.alignByDialog",
+        "key": "ctrl+shift+=",
+        "mac": "ctrl+shift+=",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "codealignment.cancelKeyGrab",
+        "key": "escape",
+        "when": "codealignment.keyGrab"
+      },
+      {
+        "command": "codealignment.keyGrabBackspace",
+        "key": "backspace",
+        "when": "codealignment.keyGrab"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node --test out/test/*.test.js",
+    "package": "npx --yes @vscode/vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.6.3"
+  }
+}
