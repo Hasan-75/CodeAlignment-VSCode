@@ -2,7 +2,7 @@
   "name": "codealignment-vscode",
   "displayName": "Code Alignment",
   "description": "Align code into columns by delimiter. Inspired by Chris McGrath's Visual Studio Code alignment extension.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "hasan75",
   "license": "MIT",
   "repository": {
