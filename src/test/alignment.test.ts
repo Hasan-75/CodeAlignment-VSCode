@@ -172,3 +172,61 @@ describe("getShortcut", () => {
     assert.ok(shortcut?.addSpace);
   });
 });
+
+describe("RegexDelimiterFinder - zero-length match safety", () => {
+  const finder = new RegexDelimiterFinder();
+
+  it("does not infinite loop on zero-length match", () => {
+    // \s* can match zero characters; ensure it still returns a valid index
+    const result = finder.getIndex("abc", "\\s*", 0, 4);
+    assert.ok(result.compareIndex >= 0);
+    assert.ok(result.insertIndex >= 0);
+  });
+
+  it("returns -1 when pattern never matches", () => {
+    assert.equal(finder.getIndex("hello", "xyz", 0, 4).compareIndex, -1);
+  });
+
+  it("finds match after minIndex", () => {
+    const result = finder.getIndex("abc=def", "=", 2, 4);
+    assert.ok(result.compareIndex >= 0);
+  });
+
+  it("named group 'compare' takes priority", () => {
+    const result = finder.getIndex("a=b", "(?<compare>=)", 0, 4);
+    assert.equal(result.compareIndex, 1);
+  });
+
+  it("named group 'insert' takes priority over 'compare'", () => {
+    const result = finder.getIndex("a=b", "(?<insert>=)", 0, 4);
+    assert.equal(result.insertIndex, 1);
+  });
+
+  it("named group 'x' falls back when compare/insert absent", () => {
+    const result = finder.getIndex("a=b", "(?<x>=)", 0, 4);
+    assert.equal(result.compareIndex, 1);
+    assert.equal(result.insertIndex, 1);
+  });
+
+  it("falls back to match.index when no named groups", () => {
+    const result = finder.getIndex("a=b", "=", 0, 4);
+    assert.equal(result.compareIndex, 1);
+    assert.equal(result.insertIndex, 1);
+  });
+});
+
+describe("Alignment - regex with named groups", () => {
+  it("aligns using regex with compare group", async () => {
+    assert.deepEqual(
+      await align(["var x=1", "var longer=2"], "(^|[\\w\\s])(?<compare>=)", { useRegex: true }),
+      ["var x     =1", "var longer=2"]
+    );
+  });
+
+  it("aligns using regex with insert group", async () => {
+    assert.deepEqual(
+      await align(["a=b", "cc=dd"], "(?<insert>=)", { useRegex: true }),
+      ["a =b", "cc=dd"]
+    );
+  });
+});
